@@ -1,6 +1,7 @@
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm, SetPasswordForm
 from django import forms
+from syst.models import UserProfile
 
 
 class ChangePasswordForm(SetPasswordForm):
@@ -68,3 +69,16 @@ class SignUpForm(UserCreationForm):
 		self.fields['password2'].widget.attrs['placeholder'] = 'Confirm Password'
 		self.fields['password2'].label = ''
 		self.fields['password2'].help_text = '<span class="form-text text-muted"><small>Enter the same password as before, for verification.</small></span>'
+
+class UserInfoForm(forms.ModelForm):
+	user = forms.CharField(label= "", widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'User'}), required=False)
+	date_modified = forms.DateTimeField(label= "", widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'D.O.B'}), required=False)
+	phone_number = forms.CharField(label= "", widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Phone number'}), required=False)
+	county = forms.CharField(label= "", widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'County'}), required=False)
+	gender = forms.CharField(label= "", widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Gender'}), required=False)
+
+	class Meta:
+		model = UserProfile
+		fields = ('user', 'phone_number', 'county', 'gender')
+
+

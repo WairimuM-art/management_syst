@@ -14,6 +14,7 @@ class UserProfile(models.Model):
 
     def __str__(self):
         return self.user.username
+
     # create a user profile by default when user signs up
 def create_user_profile(sender, instance, created, **kwargs):
     if created:

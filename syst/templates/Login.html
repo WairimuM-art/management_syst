@@ -14,24 +14,20 @@
                 <center>
                     <div class="col-8">
                         <br><br>
-                        <br><br><br><br>
+                        <br><br>
                         Login to your account
                         <br><br>
-                        <form class="row g-3" method="POST" action="{% url 'login' %}">
+                        <form method="post" action="{% url 'login' %}">
                             {% csrf_token %}
-                          <div class="col-md-6">
-                        {#    <label for="inputEmail4" class="form-label">Username</label>#}
-                            <input type="text" class="form-text" name="username" placeholder="username">
+                          <div class="mb-3">
+                            <input type="text" class="form-control" name="username" placeholder="Username">
                           </div>
-                                                    <br><br>
-                          <div class="col-md-6">
-                        {#    <label for="password" class="form-label">Password</label>#}
+                          <div class="mb-3">
+
                             <input type="password" class="form-control" name="password" placeholder="password">
                           </div>
-                                                    <br><br>
-                          <div class="col-12">
-                            <button type="submit" class="btn btn-secondary">login</button>
-                          </div>
+                            <br><br>
+                          <button type="submit" class="btn btn-secondary">Login</button>
                         </form>
                         <br><br><br><br>
                     </div>

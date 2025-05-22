@@ -1,11 +1,12 @@
 from asyncio import exceptions as instance
 
 from django.shortcuts import render, redirect
+from .models import UserProfile
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
-from .forms import SignUpForm, UpdateUserForm, ChangePasswordForm
+from .forms import SignUpForm, UpdateUserForm, ChangePasswordForm, UserInfoForm
 from django import forms
 
 # Create your views here.
@@ -28,17 +29,17 @@ def login_user(request):
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
-            messages.success(request, 'You are now logged in.')
+            messages.success(request, ("You are now logged in."))
             return redirect('home')
         else:
-            messages.success(request, 'An error occurred, please try again.')
+            messages.success(request, ("An error occurred, please try again."))
             return redirect('login')
     else:
         return render(request, 'login.html', {})
 
 def logout_user(request):
     logout(request)
-    messages.success(request, 'You have been logged out.')
+    messages.success(request, ("You have been logged out."))
     return redirect('home')
 
 def register(request):
@@ -52,8 +53,8 @@ def register(request):
             # login user
             user = authenticate(username=username, password=password)
             login(request, user)
-            messages.success(request, 'Your registration was successful.')
-            return redirect('home')
+            messages.success(request, 'Account created successfully, please fill out the rest of the information.')
+            return redirect('update_info')
         else:
             messages.success(request, 'Oops, something went wrong please try again.')
             return redirect('register')
@@ -101,4 +102,16 @@ def update_password(request):
     return render(request, 'update_password.html', {})
 
 def update_info(request):
-    pass
+    if request.user.is_authenticated:
+        current_users = UserProfile.objects.get(user__id = request.user.id)
+        form = UserInfoForm(request.POST or None, instance=current_users)
+
+        if form.is_valid():
+            form.save()
+
+            messages.success(request, "Your info has been updated!!!!")
+            return redirect('home')
+        return render(request, 'update_info.html', {'form': form})
+    else:
+        messages.success(request, "You are not logged in.")
+        return redirect('home')
